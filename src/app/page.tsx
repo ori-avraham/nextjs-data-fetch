@@ -1,103 +1,90 @@
-import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <>
+      <header className="text-center mb-16">
+        <h1 className="text-4xl font-bold text-black mb-4">
+          Next.js Data Fetching Demo
+        </h1>
+        <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+          A comprehensive demonstration of various data fetching strategies in
+          Next.js, showcasing SSG, SSR, Client-side fetching, and ISR with
+          practical examples.
+        </p>
+      </header>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      <div className="grid md:grid-cols-2 gap-8">
+        <Link href="/posts" className="group">
+          <div className="border-2 border-black p-8 hover:bg-black hover:text-white transition-colors duration-200">
+            <h2 className="text-2xl font-bold mb-4">Posts Page</h2>
+            <h3 className="text-xl font-medium mb-4">
+              Static Site Generation (SSG)
+            </h3>
+            <p className="text-sm mb-4 opacity-75">
+              Data fetched at build time using getStaticProps
+            </p>
+            <div className="text-xs font-mono bg-gray-100 group-hover:bg-gray-800 p-2 rounded">
+              Use case: Blog posts, documentation
+            </div>
+          </div>
+        </Link>
+
+        <Link href="/tasks" className="group">
+          <div className="border-2 border-black p-8 hover:bg-black hover:text-white transition-colors duration-200">
+            <h2 className="text-2xl font-bold mb-4">Tasks Page</h2>
+            <h3 className="text-xl font-medium mb-4">
+              Server-Side Rendering (SSR)
+            </h3>
+            <p className="text-sm mb-4 opacity-75">
+              Data fetched on each request on the server
+            </p>
+            <div className="text-xs font-mono bg-gray-100 group-hover:bg-gray-800 p-2 rounded">
+              Use case: User dashboards, real-time data
+            </div>
+          </div>
+        </Link>
+
+        <Link href="/search" className="group">
+          <div className="border-2 border-black p-8 hover:bg-black hover:text-white transition-colors duration-200">
+            <h2 className="text-2xl font-bold mb-4">Search Page</h2>
+            <h3 className="text-xl font-medium mb-4">Client-Side Fetching</h3>
+            <p className="text-sm mb-4 opacity-75">
+              Data fetched in the browser using useEffect
+            </p>
+            <div className="text-xs font-mono bg-gray-100 group-hover:bg-gray-800 p-2 rounded">
+              Use case: Search, user interactions
+            </div>
+          </div>
+        </Link>
+
+        <Link href="/products" className="group">
+          <div className="border-2 border-black p-8 hover:bg-black hover:text-white transition-colors duration-200">
+            <h2 className="text-2xl font-bold mb-4">Products Page</h2>
+            <h3 className="text-xl font-medium mb-4">
+              Incremental Static Regeneration
+            </h3>
+            <p className="text-sm mb-4 opacity-75">
+              Static pages that update at runtime
+            </p>
+            <div className="text-xs font-mono bg-gray-100 group-hover:bg-gray-800 p-2 rounded">
+              Use case: Product catalogs, news feeds
+            </div>
+          </div>
+        </Link>
+      </div>
+
+      <div className="mt-16 p-8 bg-gray-50 border-l-4 border-black">
+        <h3 className="text-xl font-bold mb-4">About This Demo</h3>
+        <p className="text-gray-700 mb-4">
+          This application demonstrates different data fetching strategies in
+          Next.js using the JSONPlaceholder API. Each section shows when and how
+          to use specific data fetching methods with practical examples.
+        </p>
+        <div className="text-sm text-gray-600">
+          <strong>API Used:</strong> JSONPlaceholder (https://localhost:5000/)
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </div>
+    </>
   );
 }
