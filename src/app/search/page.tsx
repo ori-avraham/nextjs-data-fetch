@@ -2,13 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-
-interface Post {
-  id: number;
-  title: string;
-  body: string;
-  userId: number;
-}
+import { Post } from "@/types";
 
 const url = "http://localhost:5000/posts";
 
@@ -29,7 +23,8 @@ export default function ClientSidePage() {
         const data = await response.json();
         setPosts(data);
         setFilteredPosts(data);
-      } catch (err) {
+      } catch (error) {
+        console.error(error);
         setError("Failed to load posts. Please try again later.");
       } finally {
         setLoading(false);
@@ -117,7 +112,9 @@ export default function ClientSidePage() {
                 <h3 className="text-lg font-bold mb-2 capitalize">
                   {post.title}
                 </h3>
-                <p className="text-gray-700 text-sm mb-4">{post.body}</p>
+                <p className="text-gray-700 text-sm mb-4">
+                  {post.body.split(" ").slice(0, 15).join(" ")}...
+                </p>
                 <div className="flex justify-between items-center text-xs text-gray-500">
                   <span>Post ID: {post.id}</span>
                   <span>User ID: {post.userId}</span>

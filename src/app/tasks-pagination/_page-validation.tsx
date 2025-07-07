@@ -1,17 +1,31 @@
-// app/tasks/page.tsx (or your SSRPage component file)
+// app/tasks/page.tsx
 
 import Link from "next/link";
 import { revalidateTag } from "next/cache";
-import type { Task } from "@/types";
+import { Task } from "@/types";
 
-// Fetch tasks server-side
-async function getTasks() {
+const DEFAULT_TASKS_PER_PAGE = 10;
+const TASKS_PER_PAGE_OPTIONS = [5, 10, 20, 50, 100];
+
+async function getTotalTaskCount(): Promise<number> {
   const res = await fetch("http://localhost:5000/tasks", {
     cache: "no-store",
-    next: { tags: ["tasks"] },
   });
+  if (!res.ok) throw new Error("Failed to fetch total task count");
+  const allTasks = await res.json();
+  return allTasks.length;
+}
+
+async function getPaginatedTasks(page: number, limit: number): Promise<Task[]> {
+  const res = await fetch(
+    `http://localhost:5000/tasks?_page=${page}&limit=${limit}`,
+    {
+      cache: "no-store",
+      next: { tags: ["tasks"] },
+    }
+  );
   if (!res.ok) throw new Error("Failed to fetch tasks");
-  return res.json() as Promise<Task[]>;
+  return res.json();
 }
 
 // Server action to handle form submission
@@ -34,9 +48,43 @@ async function addTask(formData: FormData) {
   revalidateTag("tasks");
 }
 
-export default async function TasksPaginationPage() {
-  const tasks = await getTasks();
+export default async function SSRPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page: string; limit: string }>;
+}) {
+  const { page, limit } = await searchParams;
+  const currentPage = Math.max(parseInt(page || "1", 10), 1);
+  const tasksPerPage = parseInt(limit || DEFAULT_TASKS_PER_PAGE.toString(), 10);
+
+  // Validate tasksPerPage is in allowed options
+  const validTasksPerPage = TASKS_PER_PAGE_OPTIONS.includes(tasksPerPage)
+    ? tasksPerPage
+    : DEFAULT_TASKS_PER_PAGE;
+
+  const totalTasks = await getTotalTaskCount();
+  const totalPages = Math.ceil(totalTasks / validTasksPerPage);
+
+  // Clamp currentPage to totalPages max
+  const safePage =
+    currentPage > totalPages ? Math.max(totalPages, 1) : currentPage;
+
+  const tasks = await getPaginatedTasks(safePage, validTasksPerPage);
+
   const currentTime = new Date().toLocaleString();
+
+  // Helper function to build URL with current parameters
+  const buildUrl = (newPage?: number, newLimit?: number) => {
+    const params = new URLSearchParams();
+    if (newPage !== undefined) params.set("page", newPage.toString());
+    else if (safePage > 1) params.set("page", safePage.toString());
+
+    if (newLimit !== undefined) params.set("limit", newLimit.toString());
+    else if (validTasksPerPage !== DEFAULT_TASKS_PER_PAGE)
+      params.set("limit", validTasksPerPage.toString());
+
+    return params.toString() ? `?${params.toString()}` : "";
+  };
 
   return (
     <>
@@ -80,9 +128,8 @@ export default async function TasksPaginationPage() {
         </form>
       </div>
 
-      {/* Rest of your page content */}
       <header className="mb-12">
-        <h1 className="text-3xl font-bold mb-4">Post Page</h1>
+        <h1 className="text-3xl font-bold mb-4">Task Page</h1>
         <h2 className="text-xl font-medium mb-4">
           Server-Side Rendering (SSR)
         </h2>
@@ -119,6 +166,29 @@ export default async function TasksPaginationPage() {
         </p>
       </div>
 
+      {/* Tasks per page selector */}
+      <div className="mb-6 flex items-center gap-4">
+        <label className="text-sm font-medium">Tasks per page:</label>
+        <div className="flex gap-2">
+          {TASKS_PER_PAGE_OPTIONS.map((option) => (
+            <Link
+              key={option}
+              href={buildUrl(1, option)}
+              className={`px-3 py-1 text-sm border rounded transition ${
+                validTasksPerPage === option
+                  ? "bg-black text-white border-black"
+                  : "border-gray-300 hover:bg-gray-100"
+              }`}
+            >
+              {option}
+            </Link>
+          ))}
+        </div>
+        <span className="text-sm text-gray-500">
+          Showing {tasks.length} of {totalTasks} tasks
+        </span>
+      </div>
+
       <div className="grid md:grid-cols-2 gap-6">
         {tasks
           .sort((a, b) => b.id - a.id)
@@ -150,6 +220,29 @@ export default async function TasksPaginationPage() {
               </div>
             </div>
           ))}
+      </div>
+
+      {/* Pagination controls */}
+      <div className="flex justify-center gap-4 mt-10">
+        {safePage > 1 && (
+          <Link
+            href={buildUrl(safePage - 1)}
+            className="text-sm px-4 py-2 border border-gray-300 rounded hover:bg-gray-100"
+          >
+            ← Previous
+          </Link>
+        )}
+        <span className="text-sm px-4 py-2">
+          Page {safePage} of {totalPages}
+        </span>
+        {safePage < totalPages && (
+          <Link
+            href={buildUrl(safePage + 1)}
+            className="text-sm px-4 py-2 border border-gray-300 rounded hover:bg-gray-100"
+          >
+            Next →
+          </Link>
+        )}
       </div>
 
       <div className="mt-12 p-6 bg-gray-50 border-l-4 border-black">

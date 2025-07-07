@@ -45,6 +45,23 @@ export default function Home() {
           </div>
         </Link>
 
+        <Link href="/tasks-pagination" className="group">
+          <div className="border-2 border-black p-8 hover:bg-black hover:text-white transition-colors duration-200">
+            <h2 className="text-2xl font-bold mb-4">
+              Tasks Page With Pagination
+            </h2>
+            <h3 className="text-xl font-medium mb-4">
+              Server-Side Rendering (SSR)
+            </h3>
+            <p className="text-sm mb-4 opacity-75">
+              Data fetched on each request on the server
+            </p>
+            <div className="text-xs font-mono bg-gray-100 group-hover:bg-gray-800 p-2 rounded">
+              Use case: User dashboards, real-time data
+            </div>
+          </div>
+        </Link>
+
         <Link href="/search" className="group">
           <div className="border-2 border-black p-8 hover:bg-black hover:text-white transition-colors duration-200">
             <h2 className="text-2xl font-bold mb-4">Search Page</h2>
@@ -69,6 +86,51 @@ export default function Home() {
             </p>
             <div className="text-xs font-mono bg-gray-100 group-hover:bg-gray-800 p-2 rounded">
               Use case: Product catalogs, news feeds
+            </div>
+          </div>
+        </Link>
+
+        <Link href="/latest" className="group">
+          <div className="border-2 border-black p-8 hover:bg-black hover:text-white transition-colors duration-200">
+            <h2 className="text-2xl font-bold mb-4">
+              Latest Tasks & Popular Posts
+            </h2>
+            <h3 className="text-xl font-medium mb-4">
+              Partial Prerendering (PPR)
+            </h3>
+            <p className="text-sm mb-4 opacity-75">
+              Static shell with dynamic content holes
+            </p>
+            <div className="text-xs font-mono bg-gray-100 group-hover:bg-gray-800 p-2 rounded">
+              Use case: E-commerce, personalized content
+            </div>
+          </div>
+        </Link>
+
+        <Link href="/streaming" className="group">
+          <div className="border-2 border-black p-8 hover:bg-black hover:text-white transition-colors duration-200">
+            <h2 className="text-2xl font-bold mb-4">Streaming</h2>
+            <h3 className="text-xl font-medium mb-4">Using Suspense</h3>
+            <p className="text-sm mb-4 opacity-75">
+              Progressive page rendering
+            </p>
+            <div className="text-xs font-mono bg-gray-100 group-hover:bg-gray-800 p-2 rounded">
+              Use case: Large datasets, slow APIs
+            </div>
+          </div>
+        </Link>
+
+        <Link href="/messages" className="group">
+          <div className="border-2 border-black p-8 hover:bg-black hover:text-white transition-colors duration-200">
+            <h2 className="text-2xl font-bold mb-4">Message Dashboard (Live)e</h2>
+            <h3 className="text-xl font-medium mb-4">
+              Realtime with WebSockets
+            </h3>
+            <p className="text-sm mb-4 opacity-75">
+              Live updates pushed from the server
+            </p>
+            <div className="text-xs font-mono bg-gray-100 group-hover:bg-gray-800 p-2 rounded">
+              Use case: Dashboards, notifications
             </div>
           </div>
         </Link>

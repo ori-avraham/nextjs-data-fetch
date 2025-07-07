@@ -1,20 +1,6 @@
+import { Product } from "@/types";
 import Link from "next/link";
 
-export interface Product {
-  id: number;
-  product: string;
-  category: string;
-  price: number;
-  description: string;
-  color: string;
-  brand: string;
-  stock: number;
-  images: {
-    src: string;
-  }[];
-}
-
-// ISR - fetches products with revalidation
 async function getProducts() {
   const res = await fetch("http://localhost:5000/products", {
     next: { revalidate: 60 }, // Revalidate every 60 seconds

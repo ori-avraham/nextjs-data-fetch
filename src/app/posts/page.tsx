@@ -1,12 +1,6 @@
 // SSG Page
+import type { Post } from "@/types";
 import Link from "next/link";
-
-interface Post {
-  id: number;
-  userId: number;
-  title: string;
-  body: string;
-}
 
 async function getPosts() {
   const res = await fetch("http://localhost:5000/posts", {
@@ -72,7 +66,9 @@ export default async function PostsPage() {
               <h3 className="text-lg font-bold mb-2 capitalize">
                 {post.title}
               </h3>
-              <p className="text-gray-700 text-sm mb-4">{post.body}</p>
+              <p className="text-gray-700 text-sm mb-4 truncate">
+                {post.body.split(" ").slice(0, 15).join(" ")}...
+              </p>
               <div className="flex justify-between items-center text-xs text-gray-500">
                 <span>Post ID: {post.id}</span>
                 <span>User ID: {post.userId}</span>

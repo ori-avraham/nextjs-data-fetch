@@ -1,23 +1,9 @@
 // app/posts/[id]/page.tsx
+import type { Comment, Post } from "@/types";
 import Link from "next/link";
 
-interface Post {
-  id: number;
-  userId: number;
-  title: string;
-  body: string;
-}
-
-interface Comment {
-  id: number;
-  postId: number;
-  name: string;
-  email: string;
-  body: string;
-}
-
 async function getPost(id: string) {
-  const res = await fetch(`https://localhost:5000/posts/${id}`, {
+  const res = await fetch(`http://localhost:5000/posts/${id}`, {
     cache: "force-cache",
   });
   if (!res.ok) throw new Error("Failed to fetch post");
@@ -25,7 +11,7 @@ async function getPost(id: string) {
 }
 
 async function getComments(id: string) {
-  const res = await fetch(`https://localhost:5000/posts/${id}/comments`, {
+  const res = await fetch(`http://localhost:5000/posts/${id}/comments`, {
     cache: "force-cache",
   });
   if (!res.ok) throw new Error("Failed to fetch comments");
@@ -80,11 +66,11 @@ export default async function PostPage({
 }
 
 export async function generateStaticParams() {
-  const res = await fetch("https://localhost:5000/posts");
+  const res = await fetch("http://localhost:5000/posts");
   const posts = await res.json();
 
   // Limit to first 10 or all posts if needed
-  return posts.slice(0, 10).map((post: Post) => ({
+  return posts.map((post: Post) => ({
     id: String(post.id),
   }));
 }
