@@ -122,7 +122,9 @@ export default function Home() {
 
         <Link href="/messages" className="group">
           <div className="border-2 border-black p-8 hover:bg-black hover:text-white transition-colors duration-200">
-            <h2 className="text-2xl font-bold mb-4">Message Dashboard (Live)e</h2>
+            <h2 className="text-2xl font-bold mb-4">
+              Message Dashboard (Live)
+            </h2>
             <h3 className="text-xl font-medium mb-4">
               Realtime with WebSockets
             </h3>
@@ -131,6 +133,19 @@ export default function Home() {
             </p>
             <div className="text-xs font-mono bg-gray-100 group-hover:bg-gray-800 p-2 rounded">
               Use case: Dashboards, notifications
+            </div>
+          </div>
+        </Link>
+
+        <Link href="/messages" className="group">
+          <div className="border-2 border-black p-8 hover:bg-black hover:text-white transition-colors duration-200">
+            <h2 className="text-2xl font-bold mb-4">Tasks Management</h2>
+            <h3 className="text-xl font-medium mb-4">Server Actions</h3>
+            <p className="text-sm mb-4 opacity-75">
+              Server-side mutations without API routes
+            </p>
+            <div className="text-xs font-mono bg-gray-100 group-hover:bg-gray-800 p-2 rounded">
+              Use case: Dashboards, Content Management Systems.
             </div>
           </div>
         </Link>
